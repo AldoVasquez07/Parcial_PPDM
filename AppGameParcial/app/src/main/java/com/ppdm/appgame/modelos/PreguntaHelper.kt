@@ -1,7 +1,7 @@
 package com.ppdm.appgame.modelos
 
 object PreguntaHelper {
-    private val preguntas = listOf(
+    public val preguntas = listOf(
         Pregunta("¿Cuál es la capital de Francia?", listOf("París", "Londres", "Madrid", "Arequipa"), "París"),
         Pregunta("¿Cuál es el planeta más grande?", listOf("Marte", "Tierra", "Júpiter", "Urano"), "Júpiter"),
         Pregunta("¿Cuándo se descubrió América?", listOf("1491", "1493", "2025", "1942"), "1942"),
