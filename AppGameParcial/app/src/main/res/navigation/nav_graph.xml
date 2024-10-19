@@ -29,5 +29,17 @@
         android:id="@+id/answerFragment"
         android:name="com.ppdm.appgame.modelos.AnswerFragment"
         android:label="fragment_answer"
-        tools:layout="@layout/fragment_answer" />
+        tools:layout="@layout/fragment_answer">
+
+        <!-- Argumento para el fragmento -->
+        <argument
+            android:name="textView"
+            app:argType="boolean" />
+
+        <!-- Acción para navegar de AnswerFragment a QuestionFragment -->
+        <action
+            android:id="@+id/action_answerFragment_to_questionFragment"
+            app:destination="@id/questionFragment" />
+    </fragment>
+
 </navigation>
