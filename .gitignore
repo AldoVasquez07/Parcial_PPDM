@@ -1,0 +1,49 @@
+# Construcción de Artefactos
+.gradle/
+build/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Configuracion local de los archivos
+local.properties
+.gradle/
+.idea/
+.DS_Store
+*.iml
+*.hprof
+
+# Log files
+*.log
+
+# Archivos generados por Android Studio
+captures/
+.externalNativeBuild/
+.cxx/
+
+# Archivos especificos de kotlin
+*.kotlin_module
+
+# Cache
+.gradle/
+**/out/
+
+# Archivos de Keystore
+*.jks
+*.keystore
+
+# Proguard
+proguard/
+
+# IntelliJ IDEA
+.idea/
+
+# Archivos de Usuario Especifico de Android Studio
+*.iws
+*.iml
+.idea/
+
+# NDK
+obj/
+
+# Gradle Wrapper
+gradle/wrapper/gradle-wrapper.properties
