@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.ppdm.appgame.R
+import kotlin.math.sign
 
 class QuestionFragment : Fragment() {
 
@@ -51,20 +52,16 @@ class QuestionFragment : Fragment() {
             }
 
             override fun onFinish() {
-                // Incrementar el índice de la pregunta
-                PreguntaHelper.index += 1
-
-                // Verificar si hay más preguntas disponibles
-                if (PreguntaHelper.index < PreguntaHelper.preguntas.size) {
-                    // Navegar a la siguiente pregunta
-                    val action = QuestionFragmentDirections.actionQuestionFragmentToQuestionFragment(indicePreguntaActual + 1)
-                    findNavController().navigate(action)
-                } else {
-                    // Si no hay más preguntas, navegar al finalFragment
+                // Navegar al finalFragment cuando se acabe el tiempo
+                if (PreguntaHelper.index == PreguntaHelper.preguntas.size - 1){
+                    PreguntaHelper.index = 0
                     findNavController().navigate(R.id.action_questionFragment_to_finalFragment)
                 }
+                else {
+                    PreguntaHelper.index += 1
+                    findNavController().navigate(R.id.action_questionFragment_to_questionFragment)
+                }
             }
-
         }.start()
     }
 
