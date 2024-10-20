@@ -46,6 +46,21 @@ class QuestionFragment: Fragment() {
             val isCorrect = selectedOption == preguntas[indicePreguntaActual].repuestaCorrecta
             val action = QuestionFragmentDirections.actionQuestionFragmentToAnswerFragment(isCorrect)
             findNavController().navigate(action)
+
+            // Incrementar el índice para mostrar la siguiente pregunta
+            indicePreguntaActual++
+
+            // Verificar si hay más preguntas, sino reiniciar o finalizar
+            if (indicePreguntaActual < preguntas.size) {
+                // Mostrar la siguiente pregunta
+                displayQuestion(view)
+            } else {
+                // Si no hay más preguntas, navega a un fragmento final o reinicia el cuestionario
+                // Aquí puedes navegar a una pantalla final o reiniciar el cuestionario
+                indicePreguntaActual = 0 // Si deseas reiniciar el cuestionario
+                // O navega a un fragmento final, por ejemplo:
+                // findNavController().navigate(R.id.action_questionFragment_to_finalFragment)
+            }
         }
     }
 }
