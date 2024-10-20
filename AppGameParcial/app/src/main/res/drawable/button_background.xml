@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="16dp"/> <!-- Radio para redondear -->
+            <solid android:color="@color/colorAccentDark"/> <!-- Color al presionar -->
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <corners android:radius="16dp"/> <!-- Radio para redondear -->
+            <solid android:color="@color/colorAccent"/> <!-- Color normal -->
+        </shape>
+    </item>
+</selector>
