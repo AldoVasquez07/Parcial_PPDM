@@ -20,9 +20,24 @@
         android:name="com.ppdm.appgame.modelos.QuestionFragment"
         android:label="fragment_question"
         tools:layout="@layout/fragment_question">
+
+        <argument
+            android:name="indicePregunta"
+            app:argType="integer"
+            android:defaultValue="0" />
+
         <action
             android:id="@+id/action_questionFragment_to_answerFragment"
-            app:destination="@id/answerFragment" />
+            app:destination="@id/answerFragment">
+            <argument
+                android:name="indicePregunta"
+                app:argType="integer"
+                android:defaultValue="0" />
+        </action>
+
+        <action
+            android:id="@+id/action_questionFragment_to_finalFragment"
+            app:destination="@id/finalFragment" />
     </fragment>
 
     <fragment
@@ -31,15 +46,23 @@
         android:label="fragment_answer"
         tools:layout="@layout/fragment_answer">
 
-        <!-- Argumento para el fragmento -->
         <argument
             android:name="textView"
             app:argType="boolean" />
 
-        <!-- Acción para navegar de AnswerFragment a QuestionFragment -->
         <action
             android:id="@+id/action_answerFragment_to_questionFragment"
             app:destination="@id/questionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/finalFragment"
+        android:name="com.ppdm.appgame.modelos.FinalFragment"
+        android:label="fragment_final"
+        tools:layout="@layout/fragment_final">
+        <action
+            android:id="@+id/action_finalFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment" />
     </fragment>
 
 </navigation>
