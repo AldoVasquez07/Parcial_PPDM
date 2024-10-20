@@ -61,6 +61,10 @@
         <action
             android:id="@+id/action_answerFragment_to_questionFragment"
             app:destination="@id/questionFragment" />
+
+        <action
+            android:id="@+id/action_answerFragment_to_finalFragment"
+            app:destination="@id/finalFragment" />
     </fragment>
 
     <fragment

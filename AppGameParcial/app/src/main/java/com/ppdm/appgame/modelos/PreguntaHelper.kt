@@ -2,6 +2,7 @@ package com.ppdm.appgame.modelos
 
 object PreguntaHelper {
     var index = 0
+    var opcion = 0
 
     val preguntas = listOf(
         Pregunta("¿Cuál es la capital de Francia?", listOf("París", "Londres", "Madrid", "Arequipa"), "París"),

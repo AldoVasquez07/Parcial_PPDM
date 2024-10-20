@@ -28,7 +28,13 @@ class AnswerFragment: Fragment() {
         }
         val nextButton: Button = view.findViewById(R.id.nextButton)
         nextButton.setOnClickListener{
-            findNavController().navigate(R.id.action_answerFragment_to_questionFragment)
+            if (PreguntaHelper.index < PreguntaHelper.preguntas.size){
+                findNavController().navigate(R.id.action_answerFragment_to_questionFragment)
+            }
+            else {
+                findNavController().navigate(R.id.action_answerFragment_to_finalFragment)
+            }
+
         }
         return view
     }
