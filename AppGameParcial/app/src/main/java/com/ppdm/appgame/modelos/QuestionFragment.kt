@@ -39,11 +39,11 @@ class QuestionFragment : Fragment() {
         val optionsGroup: RadioGroup = view.findViewById(R.id.optionsGroup)
 
         // Mostrar la pregunta actual
-        questionText.text = PreguntaHelper.preguntas[indicePreguntaActual].oracion
+        questionText.text = PreguntaHelper.preguntas[PreguntaHelper.index].oracion
 
         // Limpiar el grupo de opciones y agregar nuevas opciones
         optionsGroup.removeAllViews()
-        for (option in PreguntaHelper.preguntas[indicePreguntaActual].opciones) {
+        for (option in PreguntaHelper.preguntas[PreguntaHelper.index].opciones) {
             val radioButton = RadioButton(context)
             radioButton.text = option
             optionsGroup.addView(radioButton)
@@ -52,22 +52,24 @@ class QuestionFragment : Fragment() {
         val submitButton: Button = view.findViewById(R.id.submitButton)
         submitButton.setOnClickListener {
             val selectedOption = optionsGroup.findViewById<RadioButton>(optionsGroup.checkedRadioButtonId)?.text.toString()
-            val isCorrect = selectedOption == PreguntaHelper.preguntas[indicePreguntaActual].repuestaCorrecta
+            val isCorrect = selectedOption == PreguntaHelper.preguntas[PreguntaHelper.index].repuestaCorrecta
 
             // Incrementar el índice de la pregunta para la siguiente pregunta
-            val nextIndice = indicePreguntaActual + 1
+            val nextIndice = PreguntaHelper.index + 1
 
             // Navegar al fragmento de respuesta, pasando el estado de la respuesta
             val action = QuestionFragmentDirections.actionQuestionFragmentToAnswerFragment(isCorrect)
 
             // Si hay más preguntas, pasar el nuevo índice, de lo contrario navegar a finalFragment
             if (nextIndice < PreguntaHelper.preguntas.size) {
+                PreguntaHelper.index = nextIndice  // Cambiar el índice aquí
                 findNavController().navigate(action)
             } else {
                 // Navegar al finalFragment cuando no hay más preguntas
+                PreguntaHelper.index = 0
                 findNavController().navigate(R.id.action_questionFragment_to_finalFragment)
             }
         }
-
     }
+
 }
