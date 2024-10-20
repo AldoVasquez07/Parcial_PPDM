@@ -1,10 +1,12 @@
 package com.ppdm.appgame.modelos
 
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
@@ -20,6 +22,8 @@ class QuestionFragment : Fragment() {
 
     // Variable para el índice actual de la pregunta
     private var indicePreguntaActual = 0
+    private lateinit var progressBar: ProgressBar
+    private lateinit var timer: CountDownTimer
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,9 +33,28 @@ class QuestionFragment : Fragment() {
 
         // Actualizar el índice de la pregunta basado en el argumento recibido
         indicePreguntaActual = args.indicePregunta
+        progressBar = view.findViewById(R.id.progressBar)
+        startTimer()
 
         displayQuestion(view)
         return view
+    }
+
+    private fun startTimer() {
+        progressBar.max = 30
+        progressBar.progress = 30
+
+        timer = object : CountDownTimer(30000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val secondsLeft = (millisUntilFinished / 1000).toInt()
+                progressBar.progress = secondsLeft
+            }
+
+            override fun onFinish() {
+                // Navegar al finalFragment cuando se acabe el tiempo
+                findNavController().navigate(R.id.action_questionFragment_to_finalFragment)
+            }
+        }.start()
     }
 
     private fun displayQuestion(view: View) {
@@ -70,6 +93,11 @@ class QuestionFragment : Fragment() {
                 findNavController().navigate(R.id.action_questionFragment_to_finalFragment)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        timer.cancel() // Cancelar el temporizador si se destruye el fragmento
     }
 
 }
