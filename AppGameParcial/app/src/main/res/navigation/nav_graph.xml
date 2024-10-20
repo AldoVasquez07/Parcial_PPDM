@@ -36,6 +36,14 @@
         </action>
 
         <action
+            android:id="@+id/action_questionFragment_to_questionFragment"
+            app:destination="@id/questionFragment">
+            <argument
+                android:name="indicePregunta"
+                app:argType="integer"/>
+        </action>
+
+        <action
             android:id="@+id/action_questionFragment_to_finalFragment"
             app:destination="@id/finalFragment" />
     </fragment>

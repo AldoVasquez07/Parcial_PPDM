@@ -51,9 +51,20 @@ class QuestionFragment : Fragment() {
             }
 
             override fun onFinish() {
-                // Navegar al finalFragment cuando se acabe el tiempo
-                findNavController().navigate(R.id.action_questionFragment_to_finalFragment)
+                // Incrementar el índice de la pregunta
+                PreguntaHelper.index += 1
+
+                // Verificar si hay más preguntas disponibles
+                if (PreguntaHelper.index < PreguntaHelper.preguntas.size) {
+                    // Navegar a la siguiente pregunta
+                    val action = QuestionFragmentDirections.actionQuestionFragmentToQuestionFragment(indicePreguntaActual + 1)
+                    findNavController().navigate(action)
+                } else {
+                    // Si no hay más preguntas, navegar al finalFragment
+                    findNavController().navigate(R.id.action_questionFragment_to_finalFragment)
+                }
             }
+
         }.start()
     }
 
