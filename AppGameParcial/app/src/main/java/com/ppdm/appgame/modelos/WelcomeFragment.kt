@@ -19,6 +19,10 @@ class WelcomeFragment: Fragment() {
         startButton.setOnClickListener{
             findNavController().navigate(R.id.action_welcomeFragment_to_questionFragment)
         }
+        val rankingButton: Button = view.findViewById(R.id.rankingButton)
+        rankingButton.setOnClickListener {
+            findNavController().navigate(R.id.action_welcomeFragment_to_rankingFragment)
+        }
         return view
     }
 }

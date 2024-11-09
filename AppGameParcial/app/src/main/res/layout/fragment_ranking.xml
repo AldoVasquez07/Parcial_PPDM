@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/background_color">
+
+    <!-- Contenedor del título con fondo y estilo -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="12dp"
+        android:background="@drawable/title_background"
+        android:elevation="4dp"
+        android:layout_marginBottom="16dp">
+
+        <!-- Título de Ranking -->
+        <TextView
+            android:id="@+id/rankingTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ranking"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="@color/title_color"/>
+    </LinearLayout>
+
+    <!-- Contenedor del RecyclerView con bordes y sombras -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="8dp">
+
+        <!-- RecyclerView para mostrar el ranking -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rankingRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"/>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

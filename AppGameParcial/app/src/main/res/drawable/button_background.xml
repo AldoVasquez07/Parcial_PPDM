@@ -1,15 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true">
-        <shape android:shape="rectangle">
-            <corners android:radius="16dp"/> <!-- Radio para redondear -->
-            <solid android:color="@color/colorAccentDark"/> <!-- Color al presionar -->
-        </shape>
-    </item>
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="16dp"/> <!-- Radio para redondear -->
-            <solid android:color="@color/colorAccent"/> <!-- Color normal -->
+            <corners android:radius="16dp" />
+            <gradient
+                android:startColor="#EE0057"
+                android:endColor="#CDC0E9"
+                android:angle="45" />
+            <padding
+                android:left="10dp"
+                android:top="10dp"
+                android:right="10dp"
+                android:bottom="10dp" />
         </shape>
     </item>
 </selector>
