@@ -1,0 +1,10 @@
+<!-- res/drawable/coin_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#E0E0E0"/> <!-- Cambia este color si quieres otro fondo -->
+    <corners android:radius="16dp"/> <!-- Redondea las esquinas -->
+    <padding
+        android:left="8dp"
+        android:right="8dp"
+        android:top="4dp"
+        android:bottom="4dp"/>
+</shape>
