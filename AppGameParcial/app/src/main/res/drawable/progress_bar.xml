@@ -1,4 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Fondo de la barra -->
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle">
+            <corners android:radius="8dp"/>
+            <solid android:color="@android:color/darker_gray"/>
+        </shape>
+    </item>
 
-</selector>
+    <!-- Progreso de la barra -->
+    <item android:id="@android:id/progress">
+        <shape android:shape="rectangle">
+            <corners android:radius="8dp"/>
+            <gradient
+                android:startColor="@color/colorPrimary"
+                android:endColor="@color/colorPrimaryDark"
+                android:angle="90"/>
+        </shape>
+    </item>
+</layer-list>
