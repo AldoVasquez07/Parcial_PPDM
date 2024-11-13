@@ -23,6 +23,7 @@ class QuestionFragment : Fragment() {
     private lateinit var progressBar: ProgressBar
     private lateinit var timer: CountDownTimer
     private var timerRunning: Boolean = false
+    private var selectedOptionIndex: Int = -1
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,7 +33,6 @@ class QuestionFragment : Fragment() {
 
         progressBar = view.findViewById(R.id.progressBar)
 
-        // Recuperar el índice de la pregunta y el tiempo restante si existe
         if (savedInstanceState != null) {
             val remainingTime = savedInstanceState.getInt("remainingTime", 30)
             progressBar.progress = remainingTime
@@ -45,7 +45,7 @@ class QuestionFragment : Fragment() {
             }
 
             // Recuperar la opción seleccionada
-            PreguntaHelper.opcion = savedInstanceState.getInt("selectedOption", -1)
+            selectedOptionIndex = savedInstanceState.getInt("selectedOptionIndex", -1)
         } else {
             startTimer()
         }
@@ -65,7 +65,6 @@ class QuestionFragment : Fragment() {
             }
 
             override fun onFinish() {
-                // Al finalizar, comprobar la respuesta y navegar a la pantalla de respuesta
                 checkAnswerAndNavigate()
             }
         }.start()
@@ -74,89 +73,58 @@ class QuestionFragment : Fragment() {
     }
 
     private fun checkAnswerAndNavigate() {
-        val selectedOption = PreguntaHelper.preguntas[PreguntaHelper.index].opciones[PreguntaHelper.opcion]
+        val selectedOption = if (selectedOptionIndex != -1) {
+            PreguntaHelper.preguntas[PreguntaHelper.index].opciones[selectedOptionIndex]
+        } else null
         val isCorrect = selectedOption == PreguntaHelper.preguntas[PreguntaHelper.index].repuestaCorrecta
 
-        // Navegar al fragmento de respuesta, pasando el estado de la respuesta
         val action = QuestionFragmentDirections.actionQuestionFragmentToAnswerFragment(isCorrect)
         PreguntaHelper.index += 1
-        PreguntaHelper.opcion = 0
-        // Navegar al fragmento de respuesta
+        selectedOptionIndex = -1
+
         findNavController().navigate(action)
     }
 
     private fun displayQuestion(view: View) {
         val questionText: TextView = view.findViewById(R.id.questionText)
-        val optionsGroup: RadioGroup = view.findViewById(R.id.optionsGroup)
+        val optionButtons = listOf(
+            view.findViewById<Button>(R.id.option1),
+            view.findViewById<Button>(R.id.option2),
+            view.findViewById<Button>(R.id.option3),
+            view.findViewById<Button>(R.id.option4)
+        )
 
-        // Mostrar la pregunta actual
         questionText.text = PreguntaHelper.preguntas[PreguntaHelper.index].oracion
 
-        // Limpiar el grupo de opciones y agregar nuevas opciones
-        optionsGroup.removeAllViews()
-        for ((index, option) in PreguntaHelper.preguntas[PreguntaHelper.index].opciones.withIndex()) {
-            val radioButton = RadioButton(context)
-            radioButton.text = option
-            radioButton.id = View.generateViewId() // Asignar un ID único al RadioButton
-            optionsGroup.addView(radioButton)
-
-            // Si la opción coincide con la guardada, marcarla como seleccionada
-            if (index == PreguntaHelper.opcion) {
-                optionsGroup.check(radioButton.id)
+        for ((index, button) in optionButtons.withIndex()) {
+            button.text = PreguntaHelper.preguntas[PreguntaHelper.index].opciones[index]
+            button.setOnClickListener {
+                selectedOptionIndex = index
+                button.setBackgroundResource(R.drawable.option_button_background)
+                optionButtons.forEachIndexed { i, btn ->
+                    if (i != index) btn.setBackgroundResource(R.drawable.option_button_background)
+                }
             }
-        }
-
-        // Listener para saber qué opción fue seleccionada
-        optionsGroup.setOnCheckedChangeListener { _, checkedId ->
-            val selectedRadioButton: RadioButton? = view.findViewById(checkedId)
-            PreguntaHelper.opcion = optionsGroup.indexOfChild(selectedRadioButton) // Actualizar la opción seleccionada
         }
 
         val submitButton: Button = view.findViewById(R.id.submitButton)
         submitButton.setOnClickListener {
-            // Verificar la respuesta al hacer click en el botón de envío
             checkAnswerAndNavigate()
         }
     }
 
-    private fun navigateToNextQuestion(action: NavDirections? = null) {
-        if (PreguntaHelper.index < PreguntaHelper.preguntas.size - 1) {
-            PreguntaHelper.index += 1
-            if (action != null) {
-                findNavController().navigate(action)
-            } else {
-                resetTimer()
-                displayQuestion(requireView())
-            }
-        } else {
-            PreguntaHelper.index = 0
-            findNavController().navigate(R.id.action_questionFragment_to_finalFragment)
-        }
-    }
-
-    private fun resetTimer() {
-        if (::timer.isInitialized) {
-            timer.cancel() // Cancelar el temporizador actual
-        }
-        startTimer() // Iniciar un nuevo temporizador
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        if (::progressBar.isInitialized) { // Verificar si progressBar está inicializado
-            outState.putInt("remainingTime", progressBar.progress)
-        }
+        outState.putInt("remainingTime", progressBar.progress)
         outState.putBoolean("timerRunning", timerRunning)
-
-        // Guardar la opción seleccionada
-        outState.putInt("selectedOption", PreguntaHelper.opcion)
+        outState.putInt("selectedOptionIndex", selectedOptionIndex)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         if (::timer.isInitialized) {
-            timer.cancel() // Cancelar el temporizador si se destruye el fragmento
+            timer.cancel()
         }
-        timerRunning = false // Asegurarse de que el temporizador no esté en ejecución
+        timerRunning = false
     }
 }
