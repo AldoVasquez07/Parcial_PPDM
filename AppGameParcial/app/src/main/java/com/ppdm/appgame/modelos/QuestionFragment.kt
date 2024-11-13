@@ -102,7 +102,7 @@ class QuestionFragment : Fragment() {
                 selectedOptionIndex = index
                 button.setBackgroundResource(R.drawable.option_button_background)
                 optionButtons.forEachIndexed { i, btn ->
-                    if (i != index) btn.setBackgroundResource(R.drawable.option_button_background)
+                    if (i != index) btn.setBackgroundResource(R.drawable.option_button_background_selected)
                 }
             }
         }
