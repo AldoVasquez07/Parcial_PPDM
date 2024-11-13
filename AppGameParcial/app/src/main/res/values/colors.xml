@@ -9,4 +9,5 @@
     <color name="title_color">#3E4A89</color>
     <color name="primaryTextColor">#333333</color>
     <color name="secondaryTextColor">#2261FF</color>
+    <color name="colorPrimaryDark">#406C58</color>
 </resources>
