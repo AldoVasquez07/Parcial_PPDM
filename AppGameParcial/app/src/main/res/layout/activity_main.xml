@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controlador.MainActivity">
+    tools:context=".presentation.login.view.MainActivity">
 
     <!-- Definir un Toolbar como ActionBar -->
     <androidx.appcompat.widget.Toolbar
