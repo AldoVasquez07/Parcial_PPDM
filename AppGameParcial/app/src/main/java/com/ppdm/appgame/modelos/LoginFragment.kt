@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.ppdm.appgame.R
 
 class LoginFragment : Fragment() {
@@ -19,32 +20,31 @@ class LoginFragment : Fragment() {
     private lateinit var loginButton: Button
     private lateinit var signUpText: TextView
     private lateinit var forgotPasswordText: TextView
+    private lateinit var mAuth: FirebaseAuth
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mAuth = FirebaseAuth.getInstance() // Inicializamos FirebaseAuth
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val view = inflater.inflate(R.layout.fragment_login, container, false)
+
+        // Inicialización de vistas
         emailInput = view.findViewById(R.id.emailInput)
         passwordInput = view.findViewById(R.id.passwordInput)
         loginButton = view.findViewById(R.id.loginButton)
         signUpText = view.findViewById(R.id.signUpText)
         forgotPasswordText = view.findViewById(R.id.forgotPasswordText)
 
-        loginButton.setOnClickListener {
-            val email = emailInput.text.toString()
-            val password = passwordInput.text.toString()
-            if (validateLogin(email, password)) {
-                findNavController().navigate(R.id.action_loginFragment_to_welcomeFragment)
-            } else {
-                Toast.makeText(requireContext(), "Invalid credentials", Toast.LENGTH_SHORT).show()
-            }
-        }
-
+        // Configurar listeners
+        loginButton.setOnClickListener { handleLogin() }
         signUpText.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_signUpFragment)
         }
-
         forgotPasswordText.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_forgotPasswordFragment)
         }
@@ -52,8 +52,31 @@ class LoginFragment : Fragment() {
         return view
     }
 
-    private fun validateLogin(email: String, password: String): Boolean {
-        // Simulación de autenticación (puedes reemplazar esto con Firebase o tu lógica)
-        return email == "test@example.com" && password == "123456"
+    private fun handleLogin() {
+        val email = emailInput.text.toString().trim()
+        val password = passwordInput.text.toString().trim()
+
+        // Validación de campos vacíos
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(requireContext(), "Por favor, completa todos los campos.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Llamada a Firebase para autenticación
+        validateLogin(email, password)
+    }
+
+    private fun validateLogin(email: String, password: String) {
+        mAuth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Autenticación exitosa, redirigir al WelcomeFragment
+                    findNavController().navigate(R.id.action_loginFragment_to_welcomeFragment)
+                } else {
+                    // Mostrar mensaje de error
+                    val errorMessage = task.exception?.localizedMessage ?: "Error al iniciar sesión"
+                    Toast.makeText(requireContext(), errorMessage, Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 }
