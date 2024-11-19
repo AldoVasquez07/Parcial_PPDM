@@ -1,23 +1,23 @@
-package com.ppdm.appgame.base
-
-
+package com.ppdm.appgame.controlador
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.view.Window
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.ppdm.appgame.R
 
-abstract class BaseActivity: AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
-
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
-        requestWindowFeature(Window.FEATURE_NO_TITLE)
+    private lateinit var mAuth: FirebaseAuth
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Inicializar FirebaseAuth
+        mAuth = FirebaseAuth.getInstance()
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -35,5 +35,4 @@ abstract class BaseActivity: AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
-
 }

@@ -3,8 +3,48 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/welcomeFragment">
+    app:startDestination="@id/loginFragment">
 
+    <!-- Pantalla de Login -->
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.ppdm.appgame.modelos.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login">
+        <action
+            android:id="@+id/action_loginFragment_to_welcomeFragment"
+            app:destination="@id/welcomeFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment" />
+    </fragment>
+
+    <!-- Pantalla de Registro -->
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.ppdm.appgame.modelos.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up">
+        <action
+            android:id="@+id/action_signUpFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <!-- Pantalla de Recuperar Contraseña -->
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.ppdm.appgame.modelos.ForgotPasswordFragment"
+        android:label="fragment_forgot_password"
+        tools:layout="@layout/fragment_forgot_password">
+        <action
+            android:id="@+id/action_forgotPasswordFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <!-- Welcome Fragment -->
     <fragment
         android:id="@+id/welcomeFragment"
         android:name="com.ppdm.appgame.modelos.WelcomeFragment"
@@ -18,12 +58,14 @@
             app:destination="@id/rankingFragment" />
     </fragment>
 
+    <!-- Ranking Fragment -->
     <fragment
         android:id="@+id/rankingFragment"
         android:name="com.ppdm.appgame.modelos.RankingFragment"
         android:label="fragment_ranking"
         tools:layout="@layout/fragment_ranking" />
 
+    <!-- Question Fragment -->
     <fragment
         android:id="@+id/questionFragment"
         android:name="com.ppdm.appgame.modelos.QuestionFragment"
@@ -53,6 +95,7 @@
             app:destination="@id/finalFragment" />
     </fragment>
 
+    <!-- Answer Fragment -->
     <fragment
         android:id="@+id/answerFragment"
         android:name="com.ppdm.appgame.modelos.AnswerFragment"
@@ -69,6 +112,7 @@
             app:destination="@id/finalFragment" />
     </fragment>
 
+    <!-- Final Fragment -->
     <fragment
         android:id="@+id/finalFragment"
         android:name="com.ppdm.appgame.modelos.FinalFragment"

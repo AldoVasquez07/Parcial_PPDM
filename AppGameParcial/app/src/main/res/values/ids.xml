@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="emailInput" type="id">emailInput</item>
+    <item name="passwordInput" type="id">passwordInput</item>
+    <item name="loginButton" type="id">loginButton</item>
+    <item name="signUpText" type="id">signUpText</item>
+    <item name="forgotPasswordText" type="id">forgotPasswordText</item>
+</resources>
