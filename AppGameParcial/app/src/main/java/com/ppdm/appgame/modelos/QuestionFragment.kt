@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.ppdm.appgame.R
@@ -19,7 +20,9 @@ class QuestionFragment : Fragment() {
     private lateinit var progressBar: ProgressBar
     private lateinit var timer: CountDownTimer
     private var timerRunning: Boolean = false
+    private var selectedOptionIndex: Int = -1
     private var monedasUsuario: Int = 100 // Número inicial de monedas del usuario
+    private var comodinUsado: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +43,7 @@ class QuestionFragment : Fragment() {
                 progressBar.max = 30
             }
 
+            selectedOptionIndex = savedInstanceState.getInt("selectedOptionIndex", -1)
             monedasUsuario = savedInstanceState.getInt("monedasUsuario", 100)
         } else {
             startTimer()
@@ -62,18 +66,32 @@ class QuestionFragment : Fragment() {
             }
 
             override fun onFinish() {
-                checkAnswerAndNavigate(false) // Tiempo agotado, respuesta incorrecta
+                checkAnswerAndNavigate()
             }
         }.start()
 
         timerRunning = true
     }
 
-    private fun checkAnswerAndNavigate(isCorrect: Boolean) {
-        val action = QuestionFragmentDirections.actionQuestionFragmentToAnswerFragment(isCorrect)
-        indicePreguntaActual++
+    private fun checkAnswerAndNavigate(isCorrect: Boolean? = null) {
+        // Si no ha seleccionado ninguna opción, asignar automáticamente la primera
+        if (selectedOptionIndex == -1) {
+            selectedOptionIndex = 0
+        }
+
+        val action = QuestionFragmentDirections.actionQuestionFragmentToAnswerFragment(
+            isCorrect ?: PreguntaHelper.preguntas[indicePreguntaActual].opciones[selectedOptionIndex] == PreguntaHelper.preguntas[indicePreguntaActual].respuestaCorrecta
+        )
+
+        PreguntaHelper.index += 1
+        selectedOptionIndex = -1
+        /*if (indicePreguntaActual >= PreguntaHelper.preguntas.size){
+            indicePreguntaActual = 0
+        }*/
+        comodinUsado = false
         findNavController().navigate(action)
     }
+
 
     private fun displayQuestion(view: View) {
         val questionText: TextView = view.findViewById(R.id.questionText)
@@ -93,8 +111,8 @@ class QuestionFragment : Fragment() {
         options.forEachIndexed { index, button ->
             button.text = currentQuestion.opciones[index]
             button.setOnClickListener {
-                val isCorrect = currentQuestion.opciones[index] == currentQuestion.respuestaCorrecta
-                checkAnswerAndNavigate(isCorrect)
+                selectedOptionIndex = index
+                checkAnswerAndNavigate()
             }
         }
     }
@@ -105,33 +123,46 @@ class QuestionFragment : Fragment() {
         val comodin3 = view.findViewById<ImageView>(R.id.icono_mitad)
         val coinCount: TextView = view.findViewById(R.id.coin_count)
 
-        coinCount.text = monedasUsuario.toString()
-
         comodin1.setOnClickListener {
+            if (comodinUsado) {
+                showComodinAlreadyUsedMessage()
+                return@setOnClickListener
+            }
             if (monedasUsuario >= 50) {
                 monedasUsuario -= 50
+                comodinUsado = true
                 coinCount.text = monedasUsuario.toString()
-                checkAnswerAndNavigate(true) // Usar comodín para responder correctamente
+                checkAnswerAndNavigate(isCorrect = true)
             } else {
                 showInsufficientCoinsMessage()
             }
         }
 
         comodin2.setOnClickListener {
+            if (comodinUsado) {
+                showComodinAlreadyUsedMessage()
+                return@setOnClickListener
+            }
             if (monedasUsuario >= 15) {
                 monedasUsuario -= 15
-                coinCount.text = monedasUsuario.toString()
+                comodinUsado = true
                 descartarUnaOpcionIncorrecta(view)
+                coinCount.text = monedasUsuario.toString()
             } else {
                 showInsufficientCoinsMessage()
             }
         }
 
         comodin3.setOnClickListener {
+            if (comodinUsado) {
+                showComodinAlreadyUsedMessage()
+                return@setOnClickListener
+            }
             if (monedasUsuario >= 30) {
                 monedasUsuario -= 30
-                coinCount.text = monedasUsuario.toString()
+                comodinUsado = true
                 descartarMitadOpciones(view)
+                coinCount.text = monedasUsuario.toString()
             } else {
                 showInsufficientCoinsMessage()
             }
@@ -165,17 +196,22 @@ class QuestionFragment : Fragment() {
             PreguntaHelper.preguntas[indicePreguntaActual].opciones[index] != PreguntaHelper.preguntas[indicePreguntaActual].respuestaCorrecta
         }
 
-        incorrectOptions.take(incorrectOptions.size / 2).forEach { it.visibility = View.GONE }
+        incorrectOptions.take(2).forEach { it.visibility = View.GONE }
     }
 
     private fun showInsufficientCoinsMessage() {
-        // Mostrar mensaje indicando que no hay suficientes monedas.
+        Toast.makeText(requireContext(), "No cuenta con las monedas suficientes.", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showComodinAlreadyUsedMessage() {
+        Toast.makeText(requireContext(), "Ya has utilizado un comodín en esta pregunta.", Toast.LENGTH_SHORT).show()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt("remainingTime", progressBar.progress)
         outState.putBoolean("timerRunning", timerRunning)
+        outState.putInt("selectedOptionIndex", selectedOptionIndex)
         outState.putInt("monedasUsuario", monedasUsuario)
     }
 

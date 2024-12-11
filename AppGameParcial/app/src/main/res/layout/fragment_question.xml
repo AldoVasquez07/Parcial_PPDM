@@ -147,7 +147,7 @@
                         android:id="@+id/coin_cost_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0"
+                        android:text="50"
                         android:textSize="18sp"
                         android:textColor="@color/black"
                         android:layout_marginEnd="8dp" />
@@ -185,7 +185,7 @@
                         android:id="@+id/coin_cost_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0"
+                        android:text="15"
                         android:textSize="18sp"
                         android:textColor="@color/black"
                         android:layout_marginEnd="8dp" />
@@ -223,7 +223,7 @@
                         android:id="@+id/coin_cost_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0"
+                        android:text="30"
                         android:textSize="18sp"
                         android:textColor="@color/black"
                         android:layout_marginEnd="8dp" />

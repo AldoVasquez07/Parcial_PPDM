@@ -32,9 +32,9 @@ class AnswerFragment: Fragment() {
                 findNavController().navigate(R.id.action_answerFragment_to_questionFragment)
             }
             else {
+                PreguntaHelper.index=0
                 findNavController().navigate(R.id.action_answerFragment_to_finalFragment)
             }
-
         }
         return view
     }
