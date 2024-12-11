@@ -79,7 +79,7 @@
             android:layout_marginBottom="8dp"
             android:padding="12dp"/>
 
-        <Button
+        <!--<Button
             android:id="@+id/submitButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
             android:background="@drawable/button_background"
             android:layout_marginTop="16dp"
             android:padding="12dp"
-            android:fontFamily="sans-serif-medium"/>
+            android:fontFamily="sans-serif-medium"/>-->
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -128,6 +128,7 @@
                 android:gravity="center"
                 android:layout_weight="1">
                 <ImageView
+                    android:id="@+id/icono_comodin"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/icono_comodin"
@@ -165,6 +166,7 @@
                 android:gravity="center"
                 android:layout_weight="1">
                 <ImageView
+                    android:id="@+id/icono_descartar_uno"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:contentDescription="Comodín 2"
@@ -202,6 +204,7 @@
                 android:gravity="center"
                 android:layout_weight="1">
                 <ImageView
+                    android:id="@+id/icono_mitad"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:src="@drawable/icono_mitad"

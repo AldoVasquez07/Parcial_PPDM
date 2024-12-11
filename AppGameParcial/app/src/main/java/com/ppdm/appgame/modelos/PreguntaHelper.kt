@@ -1,13 +1,33 @@
 package com.ppdm.appgame.modelos
+import Pregunta
+import com.ppdm.appgame.R
 
 object PreguntaHelper {
-    var index = 0
-    var opcion = 0
-
     val preguntas = listOf(
-        Pregunta("¿Cuál es la capital de Francia?", listOf("París", "Londres", "Madrid", "Arequipa"), "París"),
-        Pregunta("¿Cuál es el planeta más grande?", listOf("Marte", "Tierra", "Júpiter", "Urano"), "Júpiter"),
-        Pregunta("¿Cuándo se descubrió América?", listOf("1491", "1493", "2025", "1942"), "1942"),
-        Pregunta("¿Cuánto es: 2 * 500 - 40 / 2?", listOf("1020", "980", "2000", "970"), "980")
+        Pregunta(
+            texto = "¿Cuál es la capital de Francia?",
+            imagen = R.drawable.icono_imagen,
+            opciones = listOf("Madrid", "París", "Berlín", "Roma"),
+            respuestaCorrecta = "París"
+        ),
+        Pregunta(
+            texto = "¿Cuál es el planeta más grande?",
+            imagen = R.drawable.icono_imagen,
+            opciones = listOf("Marte", "Tierra", "Júpiter", "Urano"),
+            respuestaCorrecta = "Jupiter"
+        ),
+        Pregunta(
+            texto = "¿Cuándo se descubrió América?",
+            imagen = R.drawable.icono_imagen,
+            opciones = listOf("1491", "1493", "2025", "1942"),
+            respuestaCorrecta = "1942"
+        ),
+        Pregunta(
+            texto = "¿Cuánto es: 2 * 500 - 40 / 2?",
+            imagen = R.drawable.icono_imagen,
+            opciones = listOf("1020", "980", "2000", "970"),
+            respuestaCorrecta = "980"
+        )
     )
+    var index: Int = 0
 }

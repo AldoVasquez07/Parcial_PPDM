@@ -1,7 +1,6 @@
-package com.ppdm.appgame.modelos
-
 data class Pregunta(
-    val oracion: String,
+    val texto: String,
+    val imagen: Int, // Recurso drawable para la imagen
     val opciones: List<String>,
-    val repuestaCorrecta: String
+    val respuestaCorrecta: String
 )

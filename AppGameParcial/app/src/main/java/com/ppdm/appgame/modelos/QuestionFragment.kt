@@ -6,24 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.ProgressBar
-import android.widget.RadioButton
-import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.ppdm.appgame.R
 
 class QuestionFragment : Fragment() {
 
-    private val args: QuestionFragmentArgs by navArgs()
     private var indicePreguntaActual = 0
     private lateinit var progressBar: ProgressBar
     private lateinit var timer: CountDownTimer
     private var timerRunning: Boolean = false
-    private var selectedOptionIndex: Int = -1
+    private var monedasUsuario: Int = 100 // Número inicial de monedas del usuario
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,13 +40,14 @@ class QuestionFragment : Fragment() {
                 progressBar.max = 30
             }
 
-            // Recuperar la opción seleccionada
-            selectedOptionIndex = savedInstanceState.getInt("selectedOptionIndex", -1)
+            monedasUsuario = savedInstanceState.getInt("monedasUsuario", 100)
         } else {
             startTimer()
         }
 
         displayQuestion(view)
+        setupComodines(view)
+
         return view
     }
 
@@ -65,59 +62,121 @@ class QuestionFragment : Fragment() {
             }
 
             override fun onFinish() {
-                checkAnswerAndNavigate()
+                checkAnswerAndNavigate(false) // Tiempo agotado, respuesta incorrecta
             }
         }.start()
 
         timerRunning = true
     }
 
-    private fun checkAnswerAndNavigate() {
-        val selectedOption = if (selectedOptionIndex != -1) {
-            PreguntaHelper.preguntas[PreguntaHelper.index].opciones[selectedOptionIndex]
-        } else null
-        val isCorrect = selectedOption == PreguntaHelper.preguntas[PreguntaHelper.index].repuestaCorrecta
-
+    private fun checkAnswerAndNavigate(isCorrect: Boolean) {
         val action = QuestionFragmentDirections.actionQuestionFragmentToAnswerFragment(isCorrect)
-        PreguntaHelper.index += 1
-        selectedOptionIndex = -1
-
+        indicePreguntaActual++
         findNavController().navigate(action)
     }
 
     private fun displayQuestion(view: View) {
         val questionText: TextView = view.findViewById(R.id.questionText)
-        val optionButtons = listOf(
-            view.findViewById<Button>(R.id.option1),
-            view.findViewById<Button>(R.id.option2),
-            view.findViewById<Button>(R.id.option3),
-            view.findViewById<Button>(R.id.option4)
+        val questionImage: ImageView = view.findViewById(R.id.questionImage)
+        val options = listOf<Button>(
+            view.findViewById(R.id.option1),
+            view.findViewById(R.id.option2),
+            view.findViewById(R.id.option3),
+            view.findViewById(R.id.option4)
         )
 
-        questionText.text = PreguntaHelper.preguntas[PreguntaHelper.index].oracion
+        val currentQuestion = PreguntaHelper.preguntas[indicePreguntaActual]
 
-        for ((index, button) in optionButtons.withIndex()) {
-            button.text = PreguntaHelper.preguntas[PreguntaHelper.index].opciones[index]
+        questionText.text = currentQuestion.texto
+        questionImage.setImageResource(currentQuestion.imagen)
+
+        options.forEachIndexed { index, button ->
+            button.text = currentQuestion.opciones[index]
             button.setOnClickListener {
-                selectedOptionIndex = index
-                button.setBackgroundResource(R.drawable.option_button_background)
-                optionButtons.forEachIndexed { i, btn ->
-                    if (i != index) btn.setBackgroundResource(R.drawable.option_button_background_selected)
-                }
+                val isCorrect = currentQuestion.opciones[index] == currentQuestion.respuestaCorrecta
+                checkAnswerAndNavigate(isCorrect)
+            }
+        }
+    }
+
+    private fun setupComodines(view: View) {
+        val comodin1 = view.findViewById<ImageView>(R.id.icono_comodin)
+        val comodin2 = view.findViewById<ImageView>(R.id.icono_descartar_uno)
+        val comodin3 = view.findViewById<ImageView>(R.id.icono_mitad)
+        val coinCount: TextView = view.findViewById(R.id.coin_count)
+
+        coinCount.text = monedasUsuario.toString()
+
+        comodin1.setOnClickListener {
+            if (monedasUsuario >= 50) {
+                monedasUsuario -= 50
+                coinCount.text = monedasUsuario.toString()
+                checkAnswerAndNavigate(true) // Usar comodín para responder correctamente
+            } else {
+                showInsufficientCoinsMessage()
             }
         }
 
-        val submitButton: Button = view.findViewById(R.id.submitButton)
-        submitButton.setOnClickListener {
-            checkAnswerAndNavigate()
+        comodin2.setOnClickListener {
+            if (monedasUsuario >= 15) {
+                monedasUsuario -= 15
+                coinCount.text = monedasUsuario.toString()
+                descartarUnaOpcionIncorrecta(view)
+            } else {
+                showInsufficientCoinsMessage()
+            }
         }
+
+        comodin3.setOnClickListener {
+            if (monedasUsuario >= 30) {
+                monedasUsuario -= 30
+                coinCount.text = monedasUsuario.toString()
+                descartarMitadOpciones(view)
+            } else {
+                showInsufficientCoinsMessage()
+            }
+        }
+    }
+
+    private fun descartarUnaOpcionIncorrecta(view: View) {
+        val options = listOf<Button>(
+            view.findViewById(R.id.option1),
+            view.findViewById(R.id.option2),
+            view.findViewById(R.id.option3),
+            view.findViewById(R.id.option4)
+        )
+
+        val incorrectOptions = options.filterIndexed { index, _ ->
+            PreguntaHelper.preguntas[indicePreguntaActual].opciones[index] != PreguntaHelper.preguntas[indicePreguntaActual].respuestaCorrecta
+        }
+
+        incorrectOptions.firstOrNull()?.visibility = View.GONE
+    }
+
+    private fun descartarMitadOpciones(view: View) {
+        val options = listOf<Button>(
+            view.findViewById(R.id.option1),
+            view.findViewById(R.id.option2),
+            view.findViewById(R.id.option3),
+            view.findViewById(R.id.option4)
+        )
+
+        val incorrectOptions = options.filterIndexed { index, _ ->
+            PreguntaHelper.preguntas[indicePreguntaActual].opciones[index] != PreguntaHelper.preguntas[indicePreguntaActual].respuestaCorrecta
+        }
+
+        incorrectOptions.take(incorrectOptions.size / 2).forEach { it.visibility = View.GONE }
+    }
+
+    private fun showInsufficientCoinsMessage() {
+        // Mostrar mensaje indicando que no hay suficientes monedas.
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putInt("remainingTime", progressBar.progress)
         outState.putBoolean("timerRunning", timerRunning)
-        outState.putInt("selectedOptionIndex", selectedOptionIndex)
+        outState.putInt("monedasUsuario", monedasUsuario)
     }
 
     override fun onDestroyView() {
