@@ -13,7 +13,7 @@ object PreguntaHelper {
         Pregunta(
             texto = "¿Cuál es el planeta más grande?",
             imagen = R.drawable.icono_imagen,
-            opciones = listOf("Marte", "Tierra", "Júpiter", "Urano"),
+            opciones = listOf("Marte", "Tierra", "Jupiter", "Urano"),
             respuestaCorrecta = "Jupiter"
         ),
         Pregunta(

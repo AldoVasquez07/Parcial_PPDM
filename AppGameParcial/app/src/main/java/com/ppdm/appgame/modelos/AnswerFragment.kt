@@ -21,7 +21,8 @@ class AnswerFragment: Fragment() {
         val feedbackText: TextView = view.findViewById(R.id.feedbackText)
 
         if (args.textView) {
-            feedbackText.text = "Respuesta Correcta"
+            feedbackText.text = "¡Respuesta Correcta! Premio: 10 COINS"
+            PerfilHelper.perfil.monedas += 10
         }
         else {
             feedbackText.text = "Respuesta Incorrecta"
