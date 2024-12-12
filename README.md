@@ -48,6 +48,7 @@ AppGameParcial
 │       │       ├───drawable
 │       │       ├───layout
 │       │       ├───mipmap-anydpi
+│       │       ├───mipmap-anydpi-v26
 │       │       ├───mipmap-hdpi
 │       │       ├───mipmap-mdpi
 │       │       ├───mipmap-xhdpi
