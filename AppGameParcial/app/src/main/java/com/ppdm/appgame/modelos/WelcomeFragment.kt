@@ -23,6 +23,9 @@ class WelcomeFragment: Fragment() {
         val coins: TextView = view.findViewById(R.id.coin_count)
         coins.text = PerfilHelper.perfil.monedas.toString()
 
+        val points: TextView = view.findViewById(R.id.puntaje)
+        points.text = PerfilHelper.perfil.puntaje.toString()
+
         val startButton: Button = view.findViewById(R.id.startButton)
         startButton.setOnClickListener{
             findNavController().navigate(R.id.action_welcomeFragment_to_questionFragment)
