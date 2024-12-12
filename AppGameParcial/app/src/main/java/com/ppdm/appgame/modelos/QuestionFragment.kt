@@ -30,6 +30,9 @@ class QuestionFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_question, container, false)
 
+        val coinCount: TextView = view.findViewById(R.id.coin_count)
+        coinCount.text = PerfilHelper.perfil.monedas.toString()
+
         progressBar = view.findViewById(R.id.progressBar)
 
         if (savedInstanceState != null) {
@@ -131,8 +134,9 @@ class QuestionFragment : Fragment() {
             }
             if (monedasUsuario >= 50) {
                 monedasUsuario -= 50
+                PerfilHelper.perfil.monedas -= 50
                 comodinUsado = true
-                coinCount.text = monedasUsuario.toString()
+                coinCount.text = PerfilHelper.perfil.monedas.toString()
                 checkAnswerAndNavigate(isCorrect = true)
             } else {
                 showInsufficientCoinsMessage()
@@ -146,9 +150,10 @@ class QuestionFragment : Fragment() {
             }
             if (monedasUsuario >= 15) {
                 monedasUsuario -= 15
+                PerfilHelper.perfil.monedas -= 15
                 comodinUsado = true
                 descartarUnaOpcionIncorrecta(view)
-                coinCount.text = monedasUsuario.toString()
+                coinCount.text = PerfilHelper.perfil.monedas.toString()
             } else {
                 showInsufficientCoinsMessage()
             }
@@ -161,9 +166,10 @@ class QuestionFragment : Fragment() {
             }
             if (monedasUsuario >= 30) {
                 monedasUsuario -= 30
+                PerfilHelper.perfil.monedas -= 30
                 comodinUsado = true
                 descartarMitadOpciones(view)
-                coinCount.text = monedasUsuario.toString()
+                coinCount.text = PerfilHelper.perfil.monedas.toString()
             } else {
                 showInsufficientCoinsMessage()
             }
