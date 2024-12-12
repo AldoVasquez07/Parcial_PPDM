@@ -16,7 +16,7 @@ import com.ppdm.appgame.R
 
 class QuestionFragment : Fragment() {
 
-    private var indicePreguntaActual = 0
+    // private var PreguntaHelper.index = 0
     private lateinit var progressBar: ProgressBar
     private lateinit var timer: CountDownTimer
     private var timerRunning: Boolean = false
@@ -80,14 +80,15 @@ class QuestionFragment : Fragment() {
         }
 
         val action = QuestionFragmentDirections.actionQuestionFragmentToAnswerFragment(
-            isCorrect ?: PreguntaHelper.preguntas[indicePreguntaActual].opciones[selectedOptionIndex] == PreguntaHelper.preguntas[indicePreguntaActual].respuestaCorrecta
+            isCorrect ?: PreguntaHelper.preguntas[PreguntaHelper.index].opciones[selectedOptionIndex] == PreguntaHelper.preguntas[PreguntaHelper.index].respuestaCorrecta
         )
+
+        // PreguntaHelper.index++
+        println(PreguntaHelper.index)
 
         PreguntaHelper.index += 1
         selectedOptionIndex = -1
-        /*if (indicePreguntaActual >= PreguntaHelper.preguntas.size){
-            indicePreguntaActual = 0
-        }*/
+
         comodinUsado = false
         findNavController().navigate(action)
     }
@@ -103,7 +104,7 @@ class QuestionFragment : Fragment() {
             view.findViewById(R.id.option4)
         )
 
-        val currentQuestion = PreguntaHelper.preguntas[indicePreguntaActual]
+        val currentQuestion = PreguntaHelper.preguntas[PreguntaHelper.index]
 
         questionText.text = currentQuestion.texto
         questionImage.setImageResource(currentQuestion.imagen)
@@ -178,7 +179,7 @@ class QuestionFragment : Fragment() {
         )
 
         val incorrectOptions = options.filterIndexed { index, _ ->
-            PreguntaHelper.preguntas[indicePreguntaActual].opciones[index] != PreguntaHelper.preguntas[indicePreguntaActual].respuestaCorrecta
+            PreguntaHelper.preguntas[PreguntaHelper.index].opciones[index] != PreguntaHelper.preguntas[PreguntaHelper.index].respuestaCorrecta
         }
 
         incorrectOptions.firstOrNull()?.visibility = View.GONE
@@ -193,7 +194,7 @@ class QuestionFragment : Fragment() {
         )
 
         val incorrectOptions = options.filterIndexed { index, _ ->
-            PreguntaHelper.preguntas[indicePreguntaActual].opciones[index] != PreguntaHelper.preguntas[indicePreguntaActual].respuestaCorrecta
+            PreguntaHelper.preguntas[PreguntaHelper.index].opciones[index] != PreguntaHelper.preguntas[PreguntaHelper.index].respuestaCorrecta
         }
 
         incorrectOptions.take(2).forEach { it.visibility = View.GONE }
