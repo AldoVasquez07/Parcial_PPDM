@@ -18,7 +18,7 @@ class FinalFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_final, container, false)
 
-        // Suponiendo que tendrás un TextView para mostrar algún mensaje final
+        // TextView para mostrar un mensaje final
         val finalMessage: TextView = view.findViewById(R.id.finalMessage)
         finalMessage.text = "¡Has completado el cuestionario! Gracias por participar."
 
