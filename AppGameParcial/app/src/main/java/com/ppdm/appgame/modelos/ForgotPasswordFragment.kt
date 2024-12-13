@@ -24,14 +24,16 @@ class ForgotPasswordFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_forgot_password, container, false)
+        // Estableciendo autenticación con FireBase
         mAuth = FirebaseAuth.getInstance()
 
+        // Estableciendo las variables con respecto a los campos y botones
         emailInput = view.findViewById(R.id.emailInput)
         resetPasswordButton = view.findViewById(R.id.resetPasswordButton)
 
         resetPasswordButton.setOnClickListener {
             val email = emailInput.text.toString()
-
+            // Verificando si email existe
             if (validateEmail(email)) {
                 resetPassword(email)
             }
@@ -42,11 +44,14 @@ class ForgotPasswordFragment : Fragment() {
 
     private fun validateEmail(email: String): Boolean {
         if (TextUtils.isEmpty(email)) {
+            // Caso de no ingresar nada
             Toast.makeText(requireContext(), "Por favor, introduce tu correo", Toast.LENGTH_SHORT).show()
             return false
         }
 
+        // Utilizando servicio de Android para verificar correo
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            // Caso de correo no Válido
             Toast.makeText(requireContext(), "Correo no válido", Toast.LENGTH_SHORT).show()
             return false
         }
@@ -55,6 +60,7 @@ class ForgotPasswordFragment : Fragment() {
     }
 
     private fun resetPassword(email: String) {
+        // Utilizando Servicio de Firebase para reestablecer la contraseña
         mAuth.sendPasswordResetEmail(email)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
