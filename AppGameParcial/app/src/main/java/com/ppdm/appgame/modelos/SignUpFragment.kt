@@ -26,18 +26,22 @@ class SignUpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_sign_up, container, false)
+        // Obteniendo objeto Firebase
         mAuth = FirebaseAuth.getInstance()
 
+        // Declarando aspectos del diseño
         emailInput = view.findViewById(R.id.emailInput)
         passwordInput = view.findViewById(R.id.passwordInput)
         confirmPasswordInput = view.findViewById(R.id.confirmPasswordInput)
         signUpButton = view.findViewById(R.id.signUpButton)
 
+        // Listener para realizar el registro de usuario
         signUpButton.setOnClickListener {
             val email = emailInput.text.toString()
             val password = passwordInput.text.toString()
             val confirmPassword = confirmPasswordInput.text.toString()
 
+            // Validando aspectos ingresados para el registro de usuario
             if (validateInput(email, password, confirmPassword)) {
                 registerUser(email, password)
             }
@@ -47,21 +51,25 @@ class SignUpFragment : Fragment() {
     }
 
     private fun validateInput(email: String, password: String, confirmPassword: String): Boolean {
+        // Caso de tener algun campo vacío
         if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
             Toast.makeText(requireContext(), "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
             return false
         }
 
+        // Utilizando servicio para verificar si el correo es válido
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             Toast.makeText(requireContext(), "Correo no válido", Toast.LENGTH_SHORT).show()
             return false
         }
 
+        // Determinando rudeza de la contraseña
         if (password.length < 6) {
             Toast.makeText(requireContext(), "La contraseña debe tener al menos 6 caracteres", Toast.LENGTH_SHORT).show()
             return false
         }
 
+        // Confirmando que las contraseñas sean iguales
         if (password != confirmPassword) {
             Toast.makeText(requireContext(), "Las contraseñas no coinciden", Toast.LENGTH_SHORT).show()
             return false
@@ -71,6 +79,7 @@ class SignUpFragment : Fragment() {
     }
 
     private fun registerUser(email: String, password: String) {
+        // Registrando usuario en firebase
         mAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
